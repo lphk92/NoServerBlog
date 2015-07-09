@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Edit Post</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <article>
+        <div class="container">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <form>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input name="title"
+                           type="text"
+                           class="form-control"
+                           value="{{ title }}"/>
+                <div class="form-group">
+                    <label for="subtitle">Subtitle</label>
+                    <input name="subtitle"
+                           type="text"
+                           class="form-control"
+                           value="{{ subtitle }}"/>
+                </div>
+                <div class="form-group">
+                    <label for="content">Content (Markdown)</label>
+                    <textarea name="content" class="form-control">{{ content }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-default">Save</button>
+            </form>
+            </div>
+        </div>
+    </article>
+</body>
