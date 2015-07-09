@@ -1,7 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, url_for
 
 import os.path
 import markdown2
+import json
 
 app = Flask(__name__)
 
@@ -28,6 +29,16 @@ def blog_post(post_name):
 @app.route("/edit/<post_name>")
 def edit_post(post_name):
     return render_template("edit_post.html")
+
+@app.route("/execute_post_edit/", methods=["POST"])
+def execute_post_edit():
+    data = {}
+    data["title"] = request.form["title"]
+    data["subtitle"] = request.form["subtitle"]
+    data["content"] = request.form["content"]
+    print "Got data from form!"
+    print data
+    return "Success!"
 
 if __name__ == "__main__":
     app.run()
