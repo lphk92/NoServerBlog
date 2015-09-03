@@ -4,6 +4,7 @@ import os
 import os.path
 import markdown2
 import json
+from post import Post
 
 app = Flask(__name__)
 
@@ -47,6 +48,7 @@ def blog_post(post_name):
     filename = __url_to_filename(post_name)
     print "Looking for file:", filename
     if os.path.isfile(filename):
+        p = Post.readFromFile(filename)
         with open(filename, 'r') as f:
             obj = json.loads(f.read())
             content = markdown2.markdown(obj["content"])
