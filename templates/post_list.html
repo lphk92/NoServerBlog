@@ -16,6 +16,16 @@
             padding: 0px;
             margin: 0px;
         }
+        h1
+        {
+            display: inline-block;
+            padding-right: 1em;
+        }
+        h2
+        {
+            display: inline-block;
+            font-size: 24px;
+        }
         </style>
     </head>
 
@@ -24,9 +34,9 @@
             <div class="jumbotron col-lg-12 col-md-12">
                 <h1>Post List</h1>
             </div>
-            {% for i in range(files|length) %}
+            {% for i in range(urls|length) %}
             <div class="row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <a href="blog/{{ urls[i] }}"><h1>{{ files[i] }}</h1></a>
+                <a href="blog/{{ urls[i] }}"><h1 class="col-lg-3 col-md-3">{{ titles[i] }}</h1><h2>{{ subtitles[i] }}</h2></a>
             </div>
             {% endfor %}
         </div>

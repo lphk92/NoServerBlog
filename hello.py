@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, url_for
 
+import os
 import os.path
 import markdown2
 import json
@@ -27,20 +28,25 @@ def hello(n=None):
 
 @app.route("/list")
 def list_posts():
-    files = os.listdir("./posts")    
-    urls = [__filename_to_url(f) for f in files]
-    print "Files: ", files
-    print "urls: ", urls
+    files = os.listdir("./posts")
+    objs = list()
+    urls = list()
+    for filename in files:
+        urls.append(__filename_to_url(filename))
+        with open("./posts/" + filename, 'r') as f:
+            objs.append(json.loads(f.read()))
+    titles = [o["title"] for o in objs]
+    subtitles = [o["subtitle"] for o in objs]
     return render_template("post_list.html",
-                           files=files,
+                           titles=titles,
+                           subtitles=subtitles,
                            urls=urls)
-    
+
 @app.route("/blog/<post_name>")
 def blog_post(post_name):
     filename = __url_to_filename(post_name)
     print "Looking for file:", filename
     if os.path.isfile(filename):
-        print "Found file!"
         with open(filename, 'r') as f:
             obj = json.loads(f.read())
             content = markdown2.markdown(obj["content"])
