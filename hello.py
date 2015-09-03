@@ -25,6 +25,16 @@ def __title_to_filename(title):
 def hello(n=None):
     return render_template("hello.html", name=n, users=["Me", "You", "That Guy"])
 
+@app.route("/list")
+def list_posts():
+    files = os.listdir("./posts")    
+    urls = [__filename_to_url(f) for f in files]
+    print "Files: ", files
+    print "urls: ", urls
+    return render_template("post_list.html",
+                           files=files,
+                           urls=urls)
+    
 @app.route("/blog/<post_name>")
 def blog_post(post_name):
     filename = __url_to_filename(post_name)
@@ -79,4 +89,4 @@ def execute_post_edit():
     return "Success!"
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host=os.environ['IP'],port=int(os.environ['PORT']))

@@ -5,11 +5,11 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ title }}</title>
+        <title>Post List</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
-
+        
         <style>
         .container
         {
@@ -20,17 +20,15 @@
     </head>
 
     <body>
-        <!-- Post Content -->
-        <article>
-            <div class="container col-lg-12 col-md-12">
-                <div class="jumbotron col-lg-12 col-md-12">
-                    <h1>{{ title }}</h1>
-                    <h2>{{ subtitle }}</h2>
-                </div>
-                <div class="row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    {{ content|safe }}
-                </div>
+        <div class="container col-lg-12 col-md-12">
+            <div class="jumbotron col-lg-12 col-md-12">
+                <h1>Post List</h1>
             </div>
-        </article>
+            {% for i in range(files|length) %}
+            <div class="row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <a href="blog/{{ urls[i] }}"><h1>{{ files[i] }}</h1></a>
+            </div>
+            {% endfor %}
+        </div>
     </body>
 </html>
