@@ -9,7 +9,7 @@
 
         <!-- Bootstrap Core CSS -->
         <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
-        
+
         <style>
         .container
         {
@@ -23,9 +23,9 @@
         <article>
             <div class="container col-lg-12 col-md-12">
                 <div class="jumbotron col-lg-12 col-md-12">
-                    <h1>Edit Post {{ title }}</h1>
+                    <h1>Edit Post {{ post.title }}</h1>
                 </div>
-                
+
                 <div class="row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <form action="{{ url_for('execute_post_edit') }}" method="POST">
                         <div class="form-group">
@@ -33,17 +33,17 @@
                             <input name="title"
                                    type="text"
                                    class="form-control"
-                                   value="{{ title }}"/>
+                                   value="{{ post.title }}"/>
                         <div class="form-group">
                             <label for="subtitle">Subtitle</label>
                             <input name="subtitle"
                                    type="text"
                                    class="form-control"
-                                   value="{{ subtitle }}"/>
+                                   value="{{ post.subtitle }}"/>
                         </div>
                         <div class="form-group">
                             <label for="content">Content (Markdown)</label>
-                            <textarea name="content" class="form-control">{{ content }}</textarea>
+                            <textarea name="content" class="form-control">{{ post.content }}</textarea>
                         </div>
                         <button type="submit" class="btn btn-default">Save</button>
                     </form>

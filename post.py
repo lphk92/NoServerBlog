@@ -10,7 +10,7 @@ class Post(object):
         self.md_content = markdown2.markdown(self.content)
 
     @staticmethod
-    def readFromFile(self, filename):
+    def readFromFile(filename):
         with open(filename, 'r') as f:
             obj = json.loads(f.read())
             return Post(obj["title"],

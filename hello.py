@@ -46,16 +46,9 @@ def list_posts():
 @app.route("/blog/<post_name>")
 def blog_post(post_name):
     filename = __url_to_filename(post_name)
-    print "Looking for file:", filename
     if os.path.isfile(filename):
         p = Post.readFromFile(filename)
-        with open(filename, 'r') as f:
-            obj = json.loads(f.read())
-            content = markdown2.markdown(obj["content"])
-            return render_template("post_pretty.html",
-                                   title=obj["title"],
-                                   subtitle=obj["subtitle"],
-                                   content=content)
+        return render_template("post_pretty.html", post=p)
     return "Failure"
 
 @app.route("/edit/<post_name>")
@@ -67,13 +60,8 @@ def edit_post(post_name=None):
         filename = __url_to_filename(post_name)
         print "Looking for file:", filename
         if os.path.isfile(filename):
-            with open(filename, 'r') as f:
-                obj = json.loads(f.read())
-                print "Loaded object: ", obj
-                return render_template("edit_post.html",
-                                       title=obj["title"],
-                                       subtitle=obj["subtitle"],
-                                       content=obj["content"])
+            p = Post.readFromFile(filename)
+            return render_template("edit_post.html", post=p)
         else:
             return "No file with name: " + filename
 

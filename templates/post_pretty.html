@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ title }}</title>
+        <title>{{ post.title }}</title>
 
         <!-- Bootstrap Core CSS -->
         <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
@@ -24,11 +24,12 @@
         <article>
             <div class="container col-lg-12 col-md-12">
                 <div class="jumbotron col-lg-12 col-md-12">
-                    <h1>{{ title }}</h1>
-                    <h2>{{ subtitle }}</h2>
+                    <h1>{{ post.title }}</h1>
+                    <h2>{{ post.subtitle }}</h2>
+                    <h3>{{ post.date }}</h3>
                 </div>
                 <div class="row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                    {{ content|safe }}
+                    {{ post.md_content|safe }}
                 </div>
             </div>
         </article>
