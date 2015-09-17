@@ -49,7 +49,8 @@ def edit_post(post_name=None):
 
 @app.route("/new")
 def new_post():
-    return render_template("edit_post.html", post=Post())
+    now = datetime.datetime.now().strftime("%Y-%m-%d")
+    return render_template("edit_post.html", post=Post(), today=now)
 
 @app.route("/execute_post_edit/", methods=["POST"])
 def execute_post_edit():
