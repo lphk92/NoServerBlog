@@ -1,13 +1,16 @@
+import os
 import json
 import markdown2
+import utils
 
 class Post(object):
-    def __init__(self, title="", subtitle="", date="", content=""):
+    def __init__(self, title="", subtitle="", date="", content="", url=""):
         self.title = title
         self.subtitle = subtitle
         self.date = date
         self.content = content
         self.md_content = markdown2.markdown(self.content)
+        self.url = url
 
     @staticmethod
     def readFromFile(filename):
@@ -16,8 +19,17 @@ class Post(object):
             return Post(obj["title"],
                         obj["subtitle"],
                         obj["date"],
-                        obj["content"])
+                        obj["content"],
+                        utils.filename_to_url(filename))
 
+    @staticmethod
+    def getAllPosts():
+        files = os.listdir("./posts")
+        posts = list()
+        for filename in files:
+            posts.append(Post.readFromFile("./posts/" + filename))
+        return posts
+        
     def writeToFile(self, filename):
         data = dict()
         data["title"] = self.title

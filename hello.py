@@ -5,47 +5,29 @@ import os.path
 import markdown2
 import json
 from post import Post
+import utils
+import datetime
 
 app = Flask(__name__)
 
-def __url_to_filename(url_str):
-    filename = url_str.replace(" ", "").split("/")[-1]
-    filename = "./posts/%s.json" % filename
-    return filename
-
-def __filename_to_url(filename):
-    url_str = filename.strip().split("/")[-1].split(".")[0]
-    return url_str
-
-def __title_to_filename(title):
-    special_chars = "!@#$%^&*()_+-=/\\}{[]'\";:<>.,"
-    filename = ''.join([c for c in title if not c in special_chars])
-    filename = "./posts/%s.json" % filename.replace(" ", "-").lower()
-    return filename
-
 @app.route("/")
-def hello(n=None):
-    return render_template("hello.html", name=n, users=["Me", "You", "That Guy"])
+def index():
+    posts = Post.getAllPosts()
+    latestPost = posts[0]
+    for p in posts:
+        if p.date > latestPost.date:
+            latestPost = p
+    return render_template("post_pretty.html", post=p)
 
 @app.route("/list")
 def list_posts():
     files = os.listdir("./posts")
-    objs = list()
-    urls = list()
-    for filename in files:
-        urls.append(__filename_to_url(filename))
-        with open("./posts/" + filename, 'r') as f:
-            objs.append(json.loads(f.read()))
-    titles = [o["title"] for o in objs]
-    subtitles = [o["subtitle"] for o in objs]
-    return render_template("post_list.html",
-                           titles=titles,
-                           subtitles=subtitles,
-                           urls=urls)
+    posts = Post.getAllPosts()
+    return render_template("post_list.html", posts=posts)
 
 @app.route("/blog/<post_name>")
-def blog_post(post_name):
-    filename = __url_to_filename(post_name)
+def show_post(post_name):
+    filename = utils.url_to_filename(post_name)
     if os.path.isfile(filename):
         p = Post.readFromFile(filename)
         return render_template("post_pretty.html", post=p)
@@ -57,7 +39,7 @@ def edit_post(post_name=None):
     if post_name == None:
         return "We'll manage all posts from here"
     else:
-        filename = __url_to_filename(post_name)
+        filename = utils.url_to_filename(post_name)
         print "Looking for file:", filename
         if os.path.isfile(filename):
             p = Post.readFromFile(filename)
@@ -67,7 +49,7 @@ def edit_post(post_name=None):
 
 @app.route("/new")
 def new_post():
-    return render_template("edit_post.html")
+    return render_template("edit_post.html", post=Post())
 
 @app.route("/execute_post_edit/", methods=["POST"])
 def execute_post_edit():
@@ -76,13 +58,14 @@ def execute_post_edit():
     data["title"] = request.form["title"]
     data["subtitle"] = request.form["subtitle"]
     data["content"] = request.form["content"]
+    data["date"] = request.form["date"]
     print "Got data from form!"
     print data
-    filename = __title_to_filename(data["title"])
+    filename = utils.title_to_filename(data["title"])
     print "Saving to file ", filename
     with open(filename, 'w') as f:
         f.write(json.dumps(data))
     return "Success!"
 
 if __name__ == "__main__":
-    app.run(host=os.environ['IP'],port=int(os.environ['PORT']))
+    app.run(host=os.environ['IP'], port=int(os.environ['PORT']), debug=True)
