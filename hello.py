@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
 
 import os
 import os.path
@@ -65,7 +65,7 @@ def execute_post_edit():
     print "Saving to file ", filename
     with open(filename, 'w') as f:
         f.write(json.dumps(data))
-    return "Success!"
+    return redirect(url_for('show_post', post_name=utils.title_to_url(data["title"])))
 
 if __name__ == "__main__":
     app.run(host=os.environ['IP'], port=int(os.environ['PORT']), debug=True)

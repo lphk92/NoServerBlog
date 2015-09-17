@@ -11,6 +11,9 @@
         <!-- Bootstrap Core CSS -->
         <link href="{{ url_for('static', filename='css/bootstrap.css') }}" rel="stylesheet">
         
+        <!-- Shared resources -->
+        <link href="{{ url_for('static', filename='css/base.css') }}" rel="stylesheet">
+        
         {{ extra|safe }}
     </head>
 {% endmacro %}

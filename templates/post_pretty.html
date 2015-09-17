@@ -1,13 +1,5 @@
 {% from 'macros.html' import header, nav %}
-{{ header(post.title, '
-        <style>
-        .container
-        {
-            padding: 0px;
-            margin: 0px;
-        }
-        </style>
-        ') }}
+{{ header(post.title) }}
 
     <body>
         {{ nav(True, post.url) }}
