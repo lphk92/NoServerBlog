@@ -3,6 +3,7 @@ import json
 import markdown2
 import utils
 
+
 class Post(object):
     def __init__(self, title="", subtitle="", date="", content="", url=""):
         self.title = title
@@ -29,12 +30,12 @@ class Post(object):
         for filename in files:
             posts.append(Post.readFromFile("./posts/" + filename))
         return posts
-        
+
     def writeToFile(self, filename):
         data = dict()
         data["title"] = self.title
         data["subtitle"] = self.subtitle
         data["date"] = self.date
         data["content"] = self.content
-        with open (filename, 'w') as f:
+        with open(filename, 'w') as f:
             f.write(json.dumps(data))
