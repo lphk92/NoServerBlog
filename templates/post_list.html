@@ -2,15 +2,9 @@
 
 {{ header('Post List', '
         <style>
-        h2
+        td a
         {
-            display: inline-block;
-            padding-right: 1em;
-        }
-        h3
-        {
-            display: inline-block;
-            font-size: 24px;
+            padding: 5px;
         }
         </style>
 ') }}
@@ -21,14 +15,27 @@
             <div class="jumbotron col-lg-12 col-md-12">
                 <h1>Post List</h1>
             </div>
-            {% for i in range(posts|length) %}
             <div class="row col-md-10 col-md-offset-1">
-                <a href="blog/{{ posts[i].post_id }}">
-                    <h2 class="col-md-4">{{ posts[i].date }} {{ posts[i].title }}</h2>
-                    <h3>{{ posts[i].subtitle }}</h3>
-                </a>
+                <table class="table">
+                    <tr>
+                        <th>Action</th>
+                        <th>Date</th>
+                        <th>Title</th>
+                        <th>Subtitle</th>
+                    </tr>
+                {% for i in range(posts|length) %}
+                    <tr>
+                        <td>
+                            <a href="blog/{{ posts[i].post_id }}">View</a>
+                            <a href="edit/{{ posts[i].post_id }}">Edit</a>
+                            <a href="delete/{{ posts[i].post_id }}">Delete</a>
+                        </td>
+                        <td>{{ posts[i].date }}</td>
+                        <td>{{ posts[i].title }}</td>
+                        <td>{{ posts[i].subtitle }}</td>
+                    </tr>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </body>
 </html>

@@ -9,24 +9,56 @@ import config as config
 
 
 posts_root = Path(config.data_root) / 'posts'
+trash_root = Path(config.data_root) / 'trash'
+
+if not posts_root.exists():
+    posts_root.mkdir()
+
+if not trash_root.exists():
+    trash_root.mkdir()
 
 
-def get_file(post_id):
+def get_file(post_id, trash=False):
+    if trash:
+        return trash_root / f'{post_id}.json'
     return posts_root / f'{post_id}.json'
 
+
+def generate_id():
+    return int(math.floor(time.time() * 1e6))
 
 def today():
     return datetime.datetime.now().date().strftime("%Y-%m-%d")
 
 
 class Post(object):
-    def __init__(self, post_id=None, title="", subtitle="", date=None, content=""):
-        self.post_id = post_id if post_id is not None else str(math.floor(time.time() * 1e6))
-        self.title = title
-        self.subtitle = subtitle
-        self.date = date if date is not None else today()
-        self.content = content
-        self.md_content = markdown2.markdown(self.content)
+    defaults = {
+        "post_id": None,
+        "title": "",
+        "subtitle": "",
+        "date": None,
+        "content": ""
+    }
+
+    def __init__(self, **kwargs):
+        self.__dict__ = dict(Post.defaults)
+        self.__dict__.update(kwargs)
+
+        if self.post_id is None:
+            self.post_id = generate_id()
+
+        if self.date is None:
+            self.date = today()
+
+    @property
+    def md_content(self):
+        return markdown2.markdown(self.content)
+
+    def write_to_file(self):
+        data = dict(self.__dict__)
+
+        f = get_file(self.post_id)
+        f.write_text(json.dumps(data))
 
     @staticmethod
     def read_from_file(post_id):
@@ -39,20 +71,14 @@ class Post(object):
     @staticmethod
     def get_all_posts():
         posts = [Post(**json.loads(f.read_text())) for f in posts_root.iterdir()]
-        return sorted(posts, key=lambda x: x.date, reverse=True)
+        # We can sort by post_id because it is a time, it will sort it be creation time
+        return sorted(posts, key=lambda x: int(x.post_id), reverse=True)
 
     @staticmethod
     def get_post(post_id):
         f = get_file(post_id)
         return Post(**json.loads(f.read_text()))
 
-    def write_to_file(self):
-        data = dict()
-        data["title"] = self.title
-        data["subtitle"] = self.subtitle
-        data["date"] = self.date
-        data["content"] = self.content
-        data["post_id"] = self.post_id
-
-        f = get_file(self.post_id)
-        f.write_text(json.dumps(data))
+    @staticmethod
+    def delete(post_id):
+        get_file(post_id).rename(get_file(post_id, trash=True))

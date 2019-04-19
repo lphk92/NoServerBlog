@@ -38,6 +38,11 @@ def edit_post(post_id=None):
 def new_post():
     return render_template("edit_post.html", post=Post())
 
+@app.route("/delete/<post_id>")
+def delete(post_id):
+    Post.delete(post_id)
+    return redirect(url_for('list_posts'))
+
 
 @app.route("/execute_post_edit/<post_id>", methods=["POST"])
 def execute_post_edit(post_id):
