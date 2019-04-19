@@ -1,12 +1,12 @@
 {% from 'macros.html' import header, nav %}
 {{ header('Post List', '
         <style>
-        h1
+        h2
         {
             display: inline-block;
             padding-right: 1em;
         }
-        h2
+        h3
         {
             display: inline-block;
             font-size: 24px;
@@ -21,8 +21,11 @@
                 <h1>Post List</h1>
             </div>
             {% for i in range(posts|length) %}
-            <div class="row col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <a href="blog/{{ posts[i].url }}"><h1 class="col-lg-3 col-md-3">{{ posts[i].title }}</h1><h2>{{ posts[i].subtitle }}</h2></a>
+            <div class="row col-md-10 col-md-offset-1">
+                <a href="blog/{{ posts[i].post_id }}">
+                    <h2 class="col-md-4">{{ posts[i].date }} {{ posts[i].title }}</h2>
+                    <h3>{{ posts[i].subtitle }}</h3>
+                </a>
             </div>
             {% endfor %}
         </div>
