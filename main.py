@@ -1,11 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 
-import os
-import os.path
-import json
 from post import Post
-import utils
-import datetime
 
 
 app = Flask(__name__)

@@ -1,10 +1,9 @@
 from pathlib import Path
+import datetime
 import json
 import markdown2
 import math
-import os
 import time
-import utils
 
 import config as config
 
@@ -16,12 +15,16 @@ def get_file(post_id):
     return posts_root / f'{post_id}.json'
 
 
+def today():
+    return datetime.datetime.now().date().strftime("%Y-%m-%d")
+
+
 class Post(object):
     def __init__(self, post_id=None, title="", subtitle="", date=None, content=""):
         self.post_id = post_id if post_id is not None else str(math.floor(time.time() * 1e6))
         self.title = title
         self.subtitle = subtitle
-        self.date = date if date is not None else utils.today()
+        self.date = date if date is not None else today()
         self.content = content
         self.md_content = markdown2.markdown(self.content)
 
